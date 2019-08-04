@@ -13,5 +13,19 @@ val previous_price=spark.sql("select ticker,date,close,lag(close,1) over (partit
 
 val previous_price=spark.sql("select ticker,date,close,lead(close,1) over (partition by ticker order by date)as next_day_price from stocks").show(50)
 
+//first_value
+val first_value = spark.sql("select ticker,date,close,first_value(high) over (partition by ticker order by date)as first_value_price from stocks").show(50)
+
+//last_value
+ val last_value = spark.sql("select ticker,date,close,last_value(high) over (partition by ticker order by date)as last_value_price from stocks").show(50)
+
+//max max_value
+ val max_value = spark.sql("select ticker,date, max(close) over (partition by ticker )as max_close from sto
+cks").show(50)
+
+
+//min value
+val first_value = spark.sql("select ticker,date, min(close) over (partition by ticker )as min_close from sto
+cks").show(50)
 
 
