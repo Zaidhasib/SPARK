@@ -1,0 +1,17 @@
+val data1=sc.textFile("file:///home/zaidhasib/stocks.txt")
+
+ val data2=data1.map(x=>x.split(",")).map(x=>(x(0).toInt,x(1).toString,x(2).toDouble,x(3).toDouble,x(4).toDouble,x(5).toDouble,x(6).toInt))
+
+ val data_df=data2.toDF("date","ticker","open","high","low","close","volume_of_the_day")
+
+ data_df.registerTempTable("stocks")
+
+
+spark.sql("select * from stocks").show
+
+val previous_price=spark.sql("select ticker,date,close,lag(close,1) over (partition by ticker order by date)as previous_day_price from stocks").show(50)
+
+val previous_price=spark.sql("select ticker,date,close,lead(close,1) over (partition by ticker order by date)as next_day_price from stocks").show(50)
+
+
+
