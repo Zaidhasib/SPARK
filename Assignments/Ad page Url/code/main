@@ -1,0 +1,38 @@
+//laoding data in datasets
+scala> val data1 = sc.textFile("file:///home/zaidhasib/part-00000-732eeb74-f251-4f96-85d5-5c9ae95ba709-c000.txt").toDS
+data1: org.apache.spark.sql.Dataset[String] = [value: string]
+
+
+//reading json
+scala> val data2 = spark.read.json(data1)
+data2: org.apache.spark.sql.DataFrame = [id: string, pageUrl: string ... 3 more fields]
+
+
+//filetring the null value
+scala> val data3 = data2.filter(data2("visitorId").isNotNull)
+data3: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [id: string, pageUrl: string ... 3 more fields]
+
+//importing windows function
+scala> import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.expressions.Window
+
+//partitioning the datasets with visitorId
+scala> val byVisitorId = Window.partitionBy("visitorId")
+byVisitorId: org.apache.spark.sql.expressions.WindowSpec = org.apache.spark.sql.expressions.WindowSpec@2f6bf9fb
+
+
+//orderBy timestamp
+scala> val orderVisitord = byVisitorId.orderBy("timestamp")
+orderVisitord: org.apache.spark.sql.expressions.WindowSpec = org.apache.spark.sql.expressions.WindowSpec@30ad845d
+
+//using lead for that Window
+scala> data3.withColumn("nextPageUrl",lead("pageUrl",1) over orderVisitord).show
+
+scala> val data4 = data3.withColumn("nextPageUrl",lead("pageUrl",1) over orderVisitord)
+data4: org.apache.spark.sql.DataFrame = [id: string, pageUrl: string ... 4 more fields]
+
+
+//writing the datasets into json
+scala> data4.write.format("org.apache.spark.sql.json").mode("overwrite").save("/home/zaidhasib/")
+                                                                                
+scala> data4.write.format("csv").mode("overwrite").save("/home/zaidhasib/")
