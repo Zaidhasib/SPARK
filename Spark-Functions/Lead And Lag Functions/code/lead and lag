@@ -28,4 +28,15 @@ cks").show(50)
 val first_value = spark.sql("select ticker,date, min(close) over (partition by ticker )as min_close from sto
 cks").show(50)
 
+//count
+val count=spark.sql("select ticker,date, count(ticker) over (partition by ticker )as min_close from sto
+cks").show(50)
 
+
+//sum 
+spark.sql("select ticker,date, sum(close) over (partition by ticker )as min_close from sto
+cks").show(50)
+
+//avg
+spark.sql("select ticker,date, avg(close) over (partition by ticker )as min_close from sto
+cks").show(50)

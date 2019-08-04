@@ -1,0 +1,13 @@
+//row number 
+
+val row_number = spark.sql("select ticker,close,row_number() over(partition by ticker order by close) as num from stocks").show()
+
+//rank number
+
+val rank = spark.sql("select ticker,close,rank()  over(partition by ticker order by close) as rank  fro
+m stocks").show()
+
+//dense rank
+
+val dense_rank = spark.sql("select ticker,close,dense_rank()  over(partition by ticker order by close) as dense_rank  from stocks").show()
+
