@@ -1,0 +1,43 @@
+-----------------groupByKey([numTasks])----------------------------
+
+When a groupByKey is called on a RDD pair the data in the partitions are shuffled over the network to form a key and list of values. 
+This is a costly operation particularly when working on large data set.
+This might also cause trouble when the combined value list is huge to occupy in one partition. 
+In this case a disk spill will occur.
+groupByKey() operates on Pair RDDs and is used to group all the values related to a given key.
+groupByKey() always results in Hash-Partitioned RDDs
+
+
+scala> val sample_data = sc.parallelize( Array(('A',2),('A',1),('A',3),('B',3),('B',2)))
+sample_data: org.apache.spark.rdd.RDD[(Char, Int)] = ParallelCollectionRDD[7] at parallelize at <console>:24
+
+scala> val sample_groupByKey = sample_data.groupByKey().mapValues { x => x.reduce((a,b)=>a + b ) }
+sample_groupByKey: org.apache.spark.rdd.RDD[(Char, Int)] = MapPartitionsRDD[9] at mapValues at <console>:25
+
+scala> sample_groupByKey.collect().foreach(println)
+(B,5)
+(A,6)
+
+Here first the shuffling will happen such that ,it will shuffles and collect all the element of key 'A' will be calculated
+
+
+--------------------------reduceByKey(func, [numTasks])----------------------
+
+reduceByKey(function) - When called on a dataset of (K, V) pairs, returns a dataset of (K, V) pairs where the values
+for each key are aggregated using the given reduce function. 
+The function should be able to take arguments of some type and it returns same result data type. Like in groupByKey,
+the number of reduce tasks is configurable through an optional second argument.
+Unlike groupByKey , reduceByKey does not shuffle data at the beginning. 
+As it knows the reduce operation can be applied in same partition first , only result of reduce function is shuffled over network.
+This cause significant reduction in traffic over network. Only catch is that the values for each key has to be of same datatype. 
+If it is different datatypes it has to explicitly converted. This drawback can be addressed using combineByKey.
+
+
+scala> val sample_data = sc.parallelize( Array(('A',2),('A',1),('A',3),('B',3),('B',2)))
+sample_data: org.apache.spark.rdd.RDD[(Char, Int)] = ParallelCollectionRDD[13] at parallelize at <console>:24
+
+scala> val sample_reduceByKey = sample_data.reduceByKey(_ + _).collect().foreach(println)
+(B,5)
+(A,6)
+sample_reduceByKey: Unit = ()
+
