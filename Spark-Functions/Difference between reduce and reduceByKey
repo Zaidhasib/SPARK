@@ -1,0 +1,10 @@
+reduce() outputs a collection which does not add to the directed acyclic graph (DAG) 
+so is implemented as an action. Because once the collection is returned, 
+we know no longer refer to it as an RDD which is the basic dataset unit in spark. However, 
+reduceByKey() returns an RDD which is just another level/state in the DAG, therefore is a transformation.
+
+
+
+reduce() is a function that operates on an RDD of objects while reduceByKey() is a function that 
+operates on an RDD of key-value pairs. To put it more technically, reduce() function is a member of RDD[T] 
+class while reduceByKey() is a member of the PairRDDFunctions[K, V] class.
