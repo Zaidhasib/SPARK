@@ -1,0 +1,44 @@
+-----------------------------Spark Capstone Project - Credit Card Approval System--------------------
+
+QuickkFinn is one of the leading financial organizations that provides credit cards, travel and insurance services to its customers globally.
+ One of the services offered by the company to the customers is to apply credit cards online.
+
+Approving online credit card application is a critical task as it requires proper verification and validation of the user information. 
+To optimize the customer experience, it has been decided to provide instant approval of online credit card application.
+
+Technical team has decided to use HDFS, Spark core and Spark SQL for storing and processing customer’s online credit card requests and provide faster approval.
+
+In the process of providing approval, organization has to verify the below business rules:
+
+* Customer’s defaulter status
+
+* Customer’s credit history which provides an insight for the eligibility of approving credit card application
+
+Implementation Tasks
+Task 1: Create Spark SQL Dataframes
+
+Copy both datasets into HDFS
+
+Open Spark Scala shell
+
+Create two RDDs applicationDataRDD and ReferenceDataRDD by consuming data from CreditCardApplicationData.csv and CustomerReferenceData.csv files respectively
+
+Convert both RDDs into Spark SQL DataFrames
+
+ 
+
+Task 2: Process the Customer application data
+
+Write Spark SQL queries to join both the DataFrames and validate the customer application data against Customer reference data.
+
+  Business rules to validate:
+
+Verify whether customer is defaulter or not.
+
+Calculate total amount spent on other existing credit cards. Check if it is less than the credit limit applied.
+
+Apply the status to Approved if the customer is not a defaulter and credit limit applied is less than the amount spent on other cards.
+
+Apply the status to Rejected if the customer is a defaulter or credit limit applied is greater than the amount spent on other cards.
+
+Print the SSN, Customer Name and Status (Approved/Rejected) details on the console and save the details in HDFS.

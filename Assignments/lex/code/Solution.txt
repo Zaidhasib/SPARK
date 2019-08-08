@@ -1,0 +1,87 @@
+
+
+scala> val CustomerSchema = StructType(Array(StructField("CustomerName",StringType,true),
+     | StructField("DOB",StringType,true),
+     | StructField("SSN",StringType,true),
+     | StructField("MailD",StringType,true),
+     | StructField("PhoneNumber",LongType,true),
+     | StructField("City",StringType,true),
+     | StructField("State",StringType,true),
+     | StructField("Zipcode",StringType,true),
+     | StructField("CreditLimit",LongType,true)))
+CustomerSchema: org.apache.spark.sql.types.StructType = StructType(StructField(CustomerName,StringType,true),
+ StructField(DOB,StringType,true),
+ StructField(SSN,StringType,true), 
+ StructField(MailD,StringType,true),
+ StructField(PhoneNumber,LongType,true),
+ StructField(City,StringType,true), 
+StructField(State,StringType,true),
+ StructField(Zipcode,StringType,true), 
+ StructField(CreditLimit,LongType,true))
+ 
+ 
+ 
+scala> val data1 = spark.read.format("csv").schema(CustomerSchema).load("file:///home/zaidhasib/CreditCardApplicationData.csv")
+data1: org.apache.spark.sql.DataFrame = [CustomerName: string, DOB: string ... 7 more fields]
+
+scala> data1.createOrReplaceTempView("Customer")
+
+
+scala> val refrence = StructType(Array(StructField("CustomerName",StringType,true)
+     | ,StructField("DOB",StringType,true),
+     | StructField("SSN",StringType,true),
+     | StructField("City",StringType,true),
+     | StructField("State",StringType,true),
+     | StructField("Zipcode",LongType,true),
+     | StructField("ExistingProducts",StringType,true),
+     | StructField("OtherBankProducts",StringType,true),
+     | StructField("CreditSpent1",LongType,true),
+     | StructField("OtherBankProducts2",StringType,true),
+     | StructField("CreditSpent2",LongType,true),
+     | StructField("OtherBankProducts3",StringType,true),
+     | StructField("CreditSpent3",LongType,true),
+     | StructField("DefaulterFlag",StringType,true)))
+refrence: org.apache.spark.sql.types.StructType = StructType(StructField(CustomerName,StringType,true), StructField(DOB,StringType,true), StructField(SSN,StringType,true), 
+StructField(City,StringType,true), StructField(State,StringType,true), StructField(Zipcode,LongType,true), StructField(ExistingProducts,StringType,true),
+ StructField(OtherBankProducts,StringType,true), StructField(CreditSpent1,LongType,true), StructField(OtherBankProducts2,StringType,true), StructField(CreditSpent2,LongType,true), 
+ StructField(OtherBankProducts3,StringType,true), 
+StructField(CreditSpent3,LongType,true), StructField(DefaulterFlag,StringType,true))
+
+scala> val data2 = spark.read.format("csv").schema(refrence).load("file:///home/zaidhasib/CustomerRefererenceData.csv")
+data2: org.apache.spark.sql.DataFrame = [CustomerName: string, DOB: string ... 12 more fields]
+
+
+scala> data2.createOrReplaceTempView("refrence")
+
+
+scala> val result = spark.sql("""select c.ssn,c.customername,case
+     | when (defaulterflag=='N') and (creditspent1+creditspent2+creditspent3)<creditlimit then 'APPROVED'
+     | else 'REJECTED' end status from customer c inner join refrence r  on c.ssn=r.ssn""")
+result: org.apache.spark.sql.DataFrame = [ssn: string, customername: string ... 1 more field]
+
+scala> result.show
++-------+------------+--------+
+|    ssn|customername|  status|
++-------+------------+--------+
+|SSN0001|         Bob|APPROVED|
+|SSN0002|        Jack|APPROVED|
+|SSN0003|       Krish|APPROVED|
+|SSN0004|       Jacob|APPROVED|
+|SSN0005|       Ethen|REJECTED|
+|SSN0006|     William|APPROVED|
+|SSN0007|       Jayde|REJECTED|
+|SSN0008|       Ethan|REJECTED|
+|SSN0009|      Jayden|APPROVED|
+|SSN0010|      Anthon|REJECTED|
+|SSN0031|         Bob|APPROVED|
+|SSN0032|        Jack|APPROVED|
+|SSN0033|       Krish|APPROVED|
+|SSN0034|       Jacob|APPROVED|
+|SSN0035|       Ethen|REJECTED|
+|SSN0036|     William|APPROVED|
+|SSN0037|       Jayde|REJECTED|
+|SSN0038|       Ethan|REJECTED|
+|SSN0039|      Jayden|APPROVED|
+|SSN0040|      Anthon|REJECTED|
++-------+------------+--------+
+only showing top 20 rows
