@@ -1,0 +1,13 @@
+Hive has certain drawbacks. Initially, due to MapReduce jobs underneath, this process is slow. 
+Secondly, it is only suitable for batch processing, and not for interactive queries or iterative jobs.
+Spark SQL, on the other hand, addresses these issues remarkably well. We can directly access Hive tables on Spark SQL 
+and use SQLContext queries or DataFrame APIs to work on those tables. 
+The process is fast and highly efficient compared to Hive.
+
+* Spark SQL supports Apache Hive using HiveContext. It uses the Spark SQL execution engine to work with data stored in Hive.
+
+* HiveContext is a specialized SQLContext to work with Hive.
+
+* Import org.apache.spark.sql.hive package to use HiveContext.
+
+* 
