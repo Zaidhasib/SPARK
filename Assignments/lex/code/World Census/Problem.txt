@@ -1,0 +1,46 @@
+World One Census bureau, a principal agency of  Global Federal statistical system is involved in performing data analytics against people's data
+ like educational qualification, marital status, their economy etc across globe.
+
+This analysis would help in finding statistical data about people like number of people under respective countries, their educational criteria, 
+marital status along with other statistical info
+
+This analysis further helps the agency to provide and enroll better employment opportunities to certain people and help them choose different job 
+roles available in other parts of globe
+
+Schema - DisplayID, EmploymentType,EduQuali, MaritalStatus,JobType,WorkingHoursPerWeek,Country,Salary
+
+Below are the data analysis requirements of World One Census:
+
+Below 1 and 2 requirements related to Load and Filter RDD operations category.
+
+
+1. Compute the number of people whose marital status is "Unmarried"
+2. Compute total number of people with salary <=50K and total number of people with salary >50K 
+
+ 
+
+Below 3 and 4 requirements related to Paired RDD operations demo
+
+
+3. Compute the total count of people living in every country
+4. Compute the total count of people per job type
+
+ 
+
+Below 5,6 requirements related to Spark Joins demo
+
+Consider below "IncomeTaxSlab.tsv" dataset which contains EmployeeType, IncomeTaxToPay(%)
+
+SelfEmplo  5
+
+Private 10
+
+StateGov 15
+
+FedGov 25
+
+
+5. Join World one census data with IncomeTaxSlab data and print <DisplayID, EmploymentType,JobType,Country,Salary,IncomeTaxToPay> fields as an output.
+
+
+6. Join World one census data with IncomeTaxSlab data. Filter the records where Salary > 50K and print all fields along with IncomeTaxToPay.

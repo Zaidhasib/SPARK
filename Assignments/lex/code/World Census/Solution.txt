@@ -1,0 +1,54 @@
+scala> val data1 = sc.textFile("file:///home/zaidhasib/WorldOneCensusData.txt")
+data1: org.apache.spark.rdd.RDD[String] = file:///home/zaidhasib/WorldOneCensusData.txt MapPartitionsRDD[1] at textFile at <console>:24
+
+scala> val data2 = data1.map(x=>x.split("\t")).map(r=>r(3)).filter(_.contains("Unmarried")).count()
+data2: Long = 60                                                                
+
+scala> val data2 = data1.map(x=>x.split("\t")).map(x=>x(7)).filter(_.contains("<=50K")).count()
+data2: Long = 40
+
+scala> val data2 = data1.map(x=>x.split("\t")).map(x=>x(7)).filter(_.contains(">50K")).count()
+data2: Long = 30
+
+scala> val data4 = data3.reduceByKey((x,y)=>x+y)
+data4: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[13] at reduceByKey at <console>:25
+
+scala> data4.collect.foreach(println)
+(Jamaica,10)
+(US,155)
+(Mexico,10)
+(Cuba,20)
+(India,10)
+
+scala> val data3 = data1.map(x=>x.split("\t")).map(x=>(x(4),1))
+data3: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[15] at map at <console>:25
+
+scala> val data4 = data3.reduceByKey((x,y)=>x+y)
+data4: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[16] at reduceByKey at <console>:25
+
+scala> data4.collect.foreach(println)
+(MachOpsInspecter,10)
+(ServicesOther,15)
+(FarmFishing,15)
+(SalesExec,15)
+(Professor,35)
+(Transport,10)
+(Clerical,20)
+(Managerial,55)
+(Cleaners,20)
+(RepairCraft,10)
+
+scala> case class census(DisplayID:String,EmploymentType:String,EduQuali:String,MaritalStatus:String,JobType:String,WorkingHoursPerWeek:Int,Country:String,Salary:String)
+defined class census
+
+
+scala> val data4 = data2.join(data3).collect()
+
+scala> case class incometax(EmploymentType:String,incometax:Int)
+defined class incometax
+
+scala> val data2 = data1.map(x=>x.split("\t")).map(x=>census(x(0),x(1),x(2),x(3),x(4),x(5).toInt,x(6),x(7)))
+data2: org.apache.spark.rdd.RDD[census] = MapPartitionsRDD[18] at map at <console>:27
+
+scala> val dat3 = sc.textFile("file:///home/zaidhasib/IncomeTaxSlab.txt").map(x=>x.split("\t")).map(x=>incometax(x(0),x(1).toInt))
+dat3: org.apache.spark.rdd.RDD[incometax] = MapPartitionsRDD[22] at map at <console>:26

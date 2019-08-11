@@ -1,0 +1,10 @@
+1	product1	     65000
+2	product2	     70000
+3	product3	     80000
+4	product4	     90000
+5	product5	     30000
+6	product6	     20000
+7	product7	     180000
+8	product8	     20000
+9	product9	     30000
+10	product10    10000

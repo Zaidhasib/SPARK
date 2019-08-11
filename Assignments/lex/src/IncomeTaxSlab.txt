@@ -1,0 +1,4 @@
+SelfEmplo  5
+Private 10
+StateGov 15
+FedGov 25
