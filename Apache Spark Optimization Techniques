@@ -1,0 +1,18 @@
+--------------------------Architecture of Apache Spark----------------------------------
+The run time architecture of Apache Spark consists of three parts:-
+
+1. Spark Driver (Master Process)
+The spark driver converts the programs into tasks and schduele the tasks for the executors.The task Schdueler is the part of the driver and help 
+to distribute the tasks to the executor.
+
+2. Spark Cluster Manager:
+ Cluster manager is the core of the in Spark that allows to launch executors and sometimes drivers can also be launched from it. Spark Schdueler 
+ schdueles the actions and jobs in Spark Application in FIFO way on the custer manager itself.
+ 
+3. Executors(Slave Processor)
+Executors are the individual entities on which individua task of Job runs. Executors will always run till the lifecycle od spark Application
+once they are launched.Failed executors does not stop the execution of Spark Jobs.
+
+4. RDD (Resilient Distributed Datasets)
+ 
+ 
