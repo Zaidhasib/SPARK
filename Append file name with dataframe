@@ -1,0 +1,4 @@
+scala> val df1 = spark.read.json("file:///home/zaidhasib/").withColumn("file_name",input_file_name)
+df1: org.apache.spark.sql.DataFrame = [deptno: string, designation: string ... 6 more fields]
+
+scala> df1.select("file_name").show(20,false)
