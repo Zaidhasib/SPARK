@@ -1,3 +1,8 @@
+
+//requirement 
+ While reading the multiple json file from the single path and converting it into dataframes. 
+ We have to append a column in that dataframe which will have the jason file name with it from where the data is coming.
+
 scala> val df1 = spark.read.json("file:///home/zaidhasib/").withColumn("file_name",input_file_name)
 df1: org.apache.spark.sql.DataFrame = [deptno: string, designation: string ... 6 more fields]
 
