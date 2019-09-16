@@ -35,12 +35,76 @@ Output variable (desired target):
 
 The data size is huge and the Marketing team has asked you to use Spark to help them get answers for the following questions:
 1. Load data and create Spark data frame
+
+val data = sc.textFile("file:///home/zaidhasib/")
+
+val header = data.header()
+
+val data1 = data.filter(x=>x!=header)
+
+//create a case class for the schema for bank
+
+case class bank(:Int........)
+
+val data2 = dat1.map(x=>bank(x(0)........)
+
+val data3 = data2.toDF()
+
+data3.registerTempTable("bank")
+
+
 2. Give marketing success rate. (No. of people subscribed / total no. of entries)
+
+//enabling the cross join in spark
+spark.conf.set("spark.sql.crossJoin.enabled", true)
+or
+spark.sql.crossJoin.enabled=true;
+
+spark.sql("select a.count1/b.count2  as sucess_rate from (select count(*) count1 from bank where y='yes')a , (select count(*) count2 from bank)b").show()
+
 2a Give marketing failure rate
+
+spark.sql("select a.count1/b.count2  as failure_rate from (select count(*) count1 from bank where y='no')a , (select count(*) count2 from bank)b").show()
+
+
 3. Maximum, Mean, and Minimum age of average targeted customer
+
+spark.sql("select max(age) as MAXIMUM_AGE , min(age) as MINIMUM_AGE,avg(age) as MEAN from bank").show
+
 4. Check quality of customers by checking average balance, median balance of customers
+
+spark.sql("select avg(balance),percentile_approx(balance,0.5) as median from bank").show
+
 5. Check if age matters in marketing subscription for deposit
+
+spark.sql("select age,count(*) from bank where y='yes' group by age order by age").show
+
+
 6. Check if marital status mattered for subscription to deposit.
+
+spark.sql("select marital_status,count(*) from bank where y='yes' group by marital_status ").show()
+
 7. Check if age and marital status together mattered for subscription to deposit scheme
+
+
+spark.sql("select age,marital_status,count(*) as count from bank where y='yes' group by marital_status,age order by age").show()
+
 8. Do feature engineering for column—age and find right age effect on campaign
+
+val age:Int => String = if(age<18) 'children' else if (18<=age<=38) 'millineals' else 'old'
+
+import org.apache.spark.sqlfunctions.udf
+
+val ageudf = udf(age)
+
+
+
+spark.udf.register("age_udf",if(age<18) 'children' else if (18<=age<=38) 'millineals' else 'old')
+
+val data4 = data3.withColumns("age_category",age_udf(data3("age")))
+
+data4.regidtertempTable("bank_age")
+
+spark.sql("select age_category,count(*) count1 from bank_age where y='yes' group by age_category order by count1").show()
+
 The total time required to complete this task is 8 hours.
