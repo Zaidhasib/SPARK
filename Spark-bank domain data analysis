@@ -46,7 +46,7 @@ val data1 = data.filter(x=>x!=header)
 
 case class bank(:Int........)
 
-val data2 = dat1.map(x=>bank(x(0)........)
+val data2 = data1.map(x=>x.split(";").map(x=>bank(x(0)........)
 
 val data3 = data2.toDF()
 
