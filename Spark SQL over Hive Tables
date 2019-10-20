@@ -9,5 +9,9 @@ The process is fast and highly efficient compared to Hive.
 * HiveContext is a specialized SQLContext to work with Hive.
 
 * Import org.apache.spark.sql.hive package to use HiveContext.
+   
+* To access the hive tables in the spark we have to copy hive-site.xml file from conf/.
 
-* 
+* make a new object hivecontext hc , hive context will be the entry point of the spark.
+
+
